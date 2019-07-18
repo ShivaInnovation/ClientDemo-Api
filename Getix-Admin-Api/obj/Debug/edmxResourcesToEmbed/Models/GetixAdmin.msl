@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="GetixAdminModelStoreContainer" CdmEntityContainer="GetixAdminEntities">
+    <EntitySetMapping Name="Projects">
+      <EntityTypeMapping TypeName="GetixAdminModel.Project">
+        <MappingFragment StoreEntitySet="Projects">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="active" ColumnName="active" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TableColumns">
+      <EntityTypeMapping TypeName="GetixAdminModel.TableColumn">
+        <MappingFragment StoreEntitySet="TableColumn">
+          <ScalarProperty Name="projectId" ColumnName="projectId" />
+          <ScalarProperty Name="columnNames" ColumnName="columnNames" />
+          <ScalarProperty Name="tableType" ColumnName="tableType" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

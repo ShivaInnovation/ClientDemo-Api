@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="GetixAdminModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Project">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="active" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="TableColumns" Relationship="GetixAdminModel.FK_TableColumn_Projects" FromRole="Project" ToRole="TableColumn" />
+  </EntityType>
+  <EntityContainer Name="GetixAdminEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Projects" EntityType="Self.Project" />
+    <EntitySet Name="TableColumns" EntityType="GetixAdminModel.TableColumn" />
+    <AssociationSet Name="FK_TableColumn_Projects" Association="GetixAdminModel.FK_TableColumn_Projects">
+      <End Role="Project" EntitySet="Projects" />
+      <End Role="TableColumn" EntitySet="TableColumns" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="TableColumn">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="tableType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="columnNames" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="projectId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Project" Relationship="GetixAdminModel.FK_TableColumn_Projects" FromRole="TableColumn" ToRole="Project" />
+  </EntityType>
+  <Association Name="FK_TableColumn_Projects">
+    <End Type="GetixAdminModel.Project" Role="Project" Multiplicity="1" />
+    <End Type="GetixAdminModel.TableColumn" Role="TableColumn" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Project">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="TableColumn">
+        <PropertyRef Name="projectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
