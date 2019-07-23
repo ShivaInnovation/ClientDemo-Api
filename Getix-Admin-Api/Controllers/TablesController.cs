@@ -17,38 +17,26 @@ namespace Getix_Admin_Api.Controllers
         private GetixAdminEntities db = new GetixAdminEntities();
 
         [HttpGet]
-        public IQueryable<TableColumn> GetTables()
+        public IQueryable<ProjectTable> GetTables()
         {
-            return db.TableColumns;
+            return db.ProjectTables;           
         }
 
         [HttpGet]
         public IHttpActionResult GetTable(int id)
         {
-            var query = from tables in db.TableColumns
-                        where tables.projectId == id
-                        join projects in db.Projects on
-                        tables.projectId equals projects.id
-                        select new { tables.name, tables.tableType };
-            return Ok(query);
+           var tables = db.ProjectTables.Where(t => t.ProjectID == id).ToList();
+            return Ok(tables);
         }
-
-        [HttpGet]
-        [Route("api/Tables/GetTableNameById")]
-        public IHttpActionResult GetTableNameById(int id)
-        {
-            TableColumn table = db.TableColumns.Where(t => t.id == id).FirstOrDefault();
-            return Ok(table);
-        }
-
 
         [HttpPost]
-        public IHttpActionResult PostTable(Table table)
+        public IHttpActionResult PostTable(Table tables)
         {
             try
             {
-                var existingTable = checkTableName(table.name);
-                if (!existingTable)
+                var existingTable = checkTableName(tables.name);
+                var checkTableType = checkMainTable(tables.tableType);
+                if (!existingTable || !checkTableType)
                 {
                     string message = "Table already created";
                     return BadRequest(message);
@@ -58,54 +46,71 @@ namespace Getix_Admin_Api.Controllers
                     string connectionString = @"Data Source=NIBLP535;Initial Catalog=GetixAdminDb;Integrated Security=True";
                     using (SqlConnection con = new SqlConnection(connectionString))
                     {
-                        con.Open();
-                        int insertedID;
-                        var commandStr = "CREATE TABLE " + table.name + "(" + " Id" + " int identity(1,1) not null, ";
+                        con.Open();                       
+                        var commandStr = "CREATE TABLE " + tables.name + "(" + " Id" + " int identity(1,1) not null, ";
                         bool isFirstCol = true;
-                        foreach (var item in table.columns)
+                        foreach (var item in tables.columns)
                         {
                             if (!isFirstCol) commandStr += ",";
-                            commandStr += "[" + item + "] varchar(500)";
+                            commandStr += "[" + item.columnName + "]" + item.dataType;
                             isFirstCol = false;
                         }
-                        commandStr += ", constraint " + "[PK_" + table.name + "]" + " primary key clustered(id) " + ")";
+                        commandStr += ", constraint " + "[PK_" + tables.name + "]" + " primary key clustered(id) " + ")";
                         using (SqlCommand command = new SqlCommand(commandStr, con))
                             command.ExecuteNonQuery();
 
-                        string columns = string.Join(",", table.columns);
-                        //Insert QUery with Scope_Identity
-                        using (SqlCommand cmd = new SqlCommand("insert into TableColumn Values(@name, @tableType, @columnNames, @projectId); SELECT SCOPE_IDENTITY()   ", con))
-                        {
-                            cmd.CommandType = CommandType.Text;
-                            {
-                                //Add parameter values
-                                cmd.Parameters.AddWithValue("@name", table.name);
-                                cmd.Parameters.AddWithValue("@tableType", table.tableType);
-                                cmd.Parameters.AddWithValue("@columnNames", columns);
-                                cmd.Parameters.AddWithValue("@projectId", table.projectId);
-
-                                //Get the inserted query
-                                insertedID = Convert.ToInt32(cmd.ExecuteScalar());
-                            }
-                        }
                         con.Close();
                     }
+
+                    ProjectTable projectTable = new ProjectTable();
+                    projectTable.ProjectTableName = tables.name;
+                    projectTable.ProjectID = tables.projectId;
+                    projectTable.TableType = tables.tableType;
+                    projectTable.RowInsertBy = "shivappa";
+                    projectTable.RowInsertDate = Convert.ToDateTime(DateTime.Now.ToString("hh:mm:ss tt", System.Globalization.DateTimeFormatInfo.InvariantInfo));
+
+                    db.ProjectTables.Add(projectTable);
+                    db.SaveChanges();
+
+                    foreach (var column in tables.columns)
+                    {
+                        ProjectColumn projectColumn = new ProjectColumn();
+                        projectColumn.CoulmnName = column.columnName;
+                        projectColumn.Datatype = column.dataType;
+                        projectColumn.ProjectId = tables.projectId;
+                        projectColumn.ProjectTableID = projectTable.ProjectTableID;
+                        projectColumn.RowInsertDate = Convert.ToDateTime(DateTime.Now.ToString("hh:mm:ss tt", System.Globalization.DateTimeFormatInfo.InvariantInfo));
+                        db.ProjectColumns.Add(projectColumn);
+                    }
+                    db.SaveChanges();
                 }
             }
             catch (Exception ex)
             {
-
             }
 
             return Ok();
-
         }
         private bool checkTableName(string name)
         {
+            var lstResult = (from table in db.ProjectTables.AsEnumerable()
+                             where table.ProjectTableName == name
+                             select table.ProjectTableName).ToList();
+            if (lstResult.Count == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
-            var lstResult = (from table in db.TableColumns.AsEnumerable()
-                             where table.name == name
-                             select table.name).ToList();
+        private bool checkMainTable(string name)
+        {
+            var lstResult = (from table in db.ProjectTables.AsEnumerable()
+                             where table.TableType == name
+                             select table.TableType).ToList();
             if (lstResult.Count == 0)
             {
                 return true;

@@ -5,6 +5,25 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="GetixAdminModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ProjectColumns">
+          <Key>
+            <PropertyRef Name="ProjectColumnId" />
+          </Key>
+          <Property Name="ProjectColumnId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProjectId" Type="int" Nullable="false" />
+          <Property Name="ProjectTableID" Type="int" Nullable="false" />
+          <Property Name="CoulmnName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Datatype" Type="varchar" MaxLength="100" />
+          <Property Name="RowInsertDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProjectConfig">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="projects" Type="varchar(max)" Nullable="false" />
+          <Property Name="users" Type="varchar(max)" Nullable="false" />
+        </EntityType>
         <EntityType Name="Projects">
           <Key>
             <PropertyRef Name="id" />
@@ -13,104 +32,123 @@
           <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="description" Type="varchar(max)" />
           <Property Name="active" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ModifiedBy" Type="varchar" MaxLength="150" />
+          <Property Name="ModifiedDate" Type="datetime" />
         </EntityType>
-        <EntityType Name="TableColumn">
+        <EntityType Name="ProjectTables">
           <Key>
-            <PropertyRef Name="id" />
+            <PropertyRef Name="ProjectTableID" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="tableType" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="columnNames" Type="varchar(max)" Nullable="false" />
-          <Property Name="projectId" Type="int" Nullable="false" />
+          <Property Name="ProjectTableID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProjectTableName" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="ProjectID" Type="int" Nullable="false" />
+          <Property Name="TableType" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="RowInsertDate" Type="datetime" Nullable="false" />
+          <Property Name="RowInsertBy" Type="varchar" MaxLength="150" Nullable="false" />
         </EntityType>
-        <Association Name="FK_TableColumn_Projects">
-          <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
-          <End Role="TableColumn" Type="Self.TableColumn" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Projects">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="TableColumn">
-              <PropertyRef Name="projectId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="GetixAdminModelStoreContainer">
+          <EntitySet Name="ProjectColumns" EntityType="Self.ProjectColumns" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProjectConfig" EntityType="Self.ProjectConfig" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Projects" EntityType="Self.Projects" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="TableColumn" EntityType="Self.TableColumn" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_TableColumn_Projects" Association="Self.FK_TableColumn_Projects">
-            <End Role="Projects" EntitySet="Projects" />
-            <End Role="TableColumn" EntitySet="TableColumn" />
-          </AssociationSet>
+          <EntitySet Name="ProjectTables" EntityType="Self.ProjectTables" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="GetixAdminModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="GetixAdminEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ProjectConfigs" EntityType="GetixAdminModel.ProjectConfig" />
+          <EntitySet Name="ProjectColumns" EntityType="GetixAdminModel.ProjectColumn" />
+          <EntitySet Name="ProjectTables" EntityType="GetixAdminModel.ProjectTable" />
+          <EntitySet Name="Projects" EntityType="GetixAdminModel.Project" />
+        </EntityContainer>
+        <EntityType Name="ProjectConfig">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="projects" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="users" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="ProjectColumn">
+          <Key>
+            <PropertyRef Name="ProjectColumnId" />
+          </Key>
+          <Property Name="ProjectColumnId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProjectId" Type="Int32" Nullable="false" />
+          <Property Name="ProjectTableID" Type="Int32" Nullable="false" />
+          <Property Name="CoulmnName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Datatype" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="RowInsertDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="ProjectTable">
+          <Key>
+            <PropertyRef Name="ProjectTableID" />
+          </Key>
+          <Property Name="ProjectTableID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProjectTableName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="ProjectID" Type="Int32" Nullable="false" />
+          <Property Name="RowInsertDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RowInsertBy" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="TableType" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+        </EntityType>
         <EntityType Name="Project">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="active" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="TableColumns" Relationship="GetixAdminModel.FK_TableColumn_Projects" FromRole="Project" ToRole="TableColumn" />
-        </EntityType>
-        <EntityContainer Name="GetixAdminEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Projects" EntityType="Self.Project" />
-          <EntitySet Name="TableColumns" EntityType="GetixAdminModel.TableColumn" />
-          <AssociationSet Name="FK_TableColumn_Projects" Association="GetixAdminModel.FK_TableColumn_Projects">
-            <End Role="Project" EntitySet="Projects" />
-            <End Role="TableColumn" EntitySet="TableColumns" />
-          </AssociationSet>
-        </EntityContainer>
-        <EntityType Name="TableColumn">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="tableType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="columnNames" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="projectId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Project" Relationship="GetixAdminModel.FK_TableColumn_Projects" FromRole="TableColumn" ToRole="Project" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="active" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
         </EntityType>
-        <Association Name="FK_TableColumn_Projects">
-          <End Type="GetixAdminModel.Project" Role="Project" Multiplicity="1" />
-          <End Type="GetixAdminModel.TableColumn" Role="TableColumn" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Project">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="TableColumn">
-              <PropertyRef Name="projectId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="GetixAdminModelStoreContainer" CdmEntityContainer="GetixAdminEntities">
-          <EntitySetMapping Name="Projects">
-            <EntityTypeMapping TypeName="GetixAdminModel.Project">
-              <MappingFragment StoreEntitySet="Projects">
+          <EntitySetMapping Name="ProjectConfigs">
+            <EntityTypeMapping TypeName="GetixAdminModel.ProjectConfig">
+              <MappingFragment StoreEntitySet="ProjectConfig">
+                <ScalarProperty Name="users" ColumnName="users" />
+                <ScalarProperty Name="projects" ColumnName="projects" />
                 <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="description" ColumnName="description" />
-                <ScalarProperty Name="active" ColumnName="active" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="TableColumns">
-            <EntityTypeMapping TypeName="GetixAdminModel.TableColumn">
-              <MappingFragment StoreEntitySet="TableColumn">
-                <ScalarProperty Name="projectId" ColumnName="projectId" />
-                <ScalarProperty Name="columnNames" ColumnName="columnNames" />
-                <ScalarProperty Name="tableType" ColumnName="tableType" />
+          <EntitySetMapping Name="ProjectColumns">
+            <EntityTypeMapping TypeName="GetixAdminModel.ProjectColumn">
+              <MappingFragment StoreEntitySet="ProjectColumns">
+                <ScalarProperty Name="RowInsertDate" ColumnName="RowInsertDate" />
+                <ScalarProperty Name="Datatype" ColumnName="Datatype" />
+                <ScalarProperty Name="CoulmnName" ColumnName="CoulmnName" />
+                <ScalarProperty Name="ProjectTableID" ColumnName="ProjectTableID" />
+                <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+                <ScalarProperty Name="ProjectColumnId" ColumnName="ProjectColumnId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProjectTables">
+            <EntityTypeMapping TypeName="GetixAdminModel.ProjectTable">
+              <MappingFragment StoreEntitySet="ProjectTables">
+                <ScalarProperty Name="TableType" ColumnName="TableType" />
+                <ScalarProperty Name="RowInsertBy" ColumnName="RowInsertBy" />
+                <ScalarProperty Name="RowInsertDate" ColumnName="RowInsertDate" />
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="ProjectTableName" ColumnName="ProjectTableName" />
+                <ScalarProperty Name="ProjectTableID" ColumnName="ProjectTableID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Projects">
+            <EntityTypeMapping TypeName="GetixAdminModel.Project">
+              <MappingFragment StoreEntitySet="Projects">
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="active" ColumnName="active" />
+                <ScalarProperty Name="description" ColumnName="description" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>

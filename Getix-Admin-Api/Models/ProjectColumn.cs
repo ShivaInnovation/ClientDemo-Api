@@ -12,14 +12,13 @@ namespace Getix_Admin_Api.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class TableColumn
+    public partial class ProjectColumn
     {
-        public int id { get; set; }
-        public string name { get; set; }
-        public string tableType { get; set; }
-        public string columnNames { get; set; }
-        public int projectId { get; set; }
-    
-        public virtual Project Project { get; set; }
+        public int ProjectColumnId { get; set; }
+        public int ProjectId { get; set; }
+        public int ProjectTableID { get; set; }
+        public string CoulmnName { get; set; }
+        public string Datatype { get; set; }
+        public System.DateTime RowInsertDate { get; set; }
     }
 }

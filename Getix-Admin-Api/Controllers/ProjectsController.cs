@@ -21,22 +21,21 @@ namespace Getix_Admin_Api.Controllers
         private GetixAdminEntities db = new GetixAdminEntities();
 
         // GET: api/Projects
-        public IQueryable<Project> GetProjects()
+        public IEnumerable<Project> GetProjects()
         {
-            return db.Projects
-            .Include(c => c.TableColumns).OrderBy(c => c.id);
+            return db.Projects.ToList();           
         }
 
         // GET: api/Projects/5
-        [ResponseType(typeof(Project))]
+        [HttpGet]
         public IHttpActionResult GetProject(int id)
        {
-            Project project = db.Projects.Find(id);
-            if (project == null)
+            var projectColumns = db.ProjectColumns.Where(p => p.ProjectTableID == id).ToList();
+            if (projectColumns == null)
             {
                 return NotFound();
             }
-            return Ok(project);
+            return Ok(projectColumns);
         }
 
         // PUT: api/Projects/5
@@ -78,26 +77,20 @@ namespace Getix_Admin_Api.Controllers
         [HttpPost]
         public IHttpActionResult PostProject(Projects project)
         {
-            string connectionString = @"Data Source=NIBLP535;Initial Catalog=GetixAdminDb;Integrated Security=True";
-            using (SqlConnection con = new SqlConnection(connectionString))
+            if (!ModelState.IsValid)
             {
-                con.Open();
-                int insertedID;               
-                using (SqlCommand cmd = new SqlCommand("insert into Projects Values(@name, @description, @active); SELECT SCOPE_IDENTITY()   ", con))
-                {
-                    cmd.CommandType = CommandType.Text;
-                    {
-                        //Add parameter values
-                        cmd.Parameters.AddWithValue("@name", project.name);
-                        cmd.Parameters.AddWithValue("@description", project.description);                        
-                        cmd.Parameters.AddWithValue("@active", project.active);                        
-
-                        //Get the inserted query
-                        insertedID = Convert.ToInt32(cmd.ExecuteScalar());
-                    }
-                }
-                
+                return BadRequest(ModelState);
             }
+
+            Project projectData = new Project();
+            projectData.name = project.name;
+            projectData.description = project.description;
+            projectData.active = project.active;
+            projectData.ModifiedBy = "shivappa"; //project.modifiedBy;
+            projectData.ModifiedDate = Convert.ToDateTime(DateTime.Now.ToString("hh:mm:ss tt", System.Globalization.DateTimeFormatInfo.InvariantInfo));
+
+            db.Projects.Add(projectData);
+            db.SaveChanges();
             return Ok();
         }
 

@@ -170,11 +170,13 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ProjectConfigsController.cs" />
     <Compile Include="Controllers\ProjectsController.cs" />
     <Compile Include="Controllers\TablesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ConfigModel.cs" />
     <Compile Include="Models\GetixAdmin.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -193,11 +195,17 @@
     <Compile Include="Models\Project.cs">
       <DependentUpon>GetixAdmin.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Projects.cs" />
-    <Compile Include="Models\Table.cs" />
-    <Compile Include="Models\TableColumn.cs">
+    <Compile Include="Models\ProjectColumn.cs">
       <DependentUpon>GetixAdmin.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ProjectConfig.cs">
+      <DependentUpon>GetixAdmin.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Projects.cs" />
+    <Compile Include="Models\ProjectTable.cs">
+      <DependentUpon>GetixAdmin.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Table.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

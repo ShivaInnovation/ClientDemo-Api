@@ -11,5 +11,7 @@ namespace Getix_Admin_Api.Models
         public string name { get; set; }
         public string description { get; set; }        
         public string active { get; set; }
+        public string modifiedBy { get; set; }
+        public string modifiedDate { get; set; }
     }
 }

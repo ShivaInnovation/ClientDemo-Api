@@ -1,5 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="GetixAdminModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="ProjectColumns">
+    <Key>
+      <PropertyRef Name="ProjectColumnId" />
+    </Key>
+    <Property Name="ProjectColumnId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProjectId" Type="int" Nullable="false" />
+    <Property Name="ProjectTableID" Type="int" Nullable="false" />
+    <Property Name="CoulmnName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Datatype" Type="varchar" MaxLength="100" />
+    <Property Name="RowInsertDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProjectConfig">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="projects" Type="varchar(max)" Nullable="false" />
+    <Property Name="users" Type="varchar(max)" Nullable="false" />
+  </EntityType>
   <EntityType Name="Projects">
     <Key>
       <PropertyRef Name="id" />
@@ -8,35 +27,24 @@
     <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="description" Type="varchar(max)" />
     <Property Name="active" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="ModifiedBy" Type="varchar" MaxLength="150" />
+    <Property Name="ModifiedDate" Type="datetime" />
   </EntityType>
-  <EntityType Name="TableColumn">
+  <EntityType Name="ProjectTables">
     <Key>
-      <PropertyRef Name="id" />
+      <PropertyRef Name="ProjectTableID" />
     </Key>
-    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
-    <Property Name="tableType" Type="varchar" MaxLength="50" Nullable="false" />
-    <Property Name="columnNames" Type="varchar(max)" Nullable="false" />
-    <Property Name="projectId" Type="int" Nullable="false" />
+    <Property Name="ProjectTableID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProjectTableName" Type="varchar" MaxLength="150" Nullable="false" />
+    <Property Name="ProjectID" Type="int" Nullable="false" />
+    <Property Name="TableType" Type="varchar" MaxLength="150" Nullable="false" />
+    <Property Name="RowInsertDate" Type="datetime" Nullable="false" />
+    <Property Name="RowInsertBy" Type="varchar" MaxLength="150" Nullable="false" />
   </EntityType>
-  <Association Name="FK_TableColumn_Projects">
-    <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
-    <End Role="TableColumn" Type="Self.TableColumn" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Projects">
-        <PropertyRef Name="id" />
-      </Principal>
-      <Dependent Role="TableColumn">
-        <PropertyRef Name="projectId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <EntityContainer Name="GetixAdminModelStoreContainer">
+    <EntitySet Name="ProjectColumns" EntityType="Self.ProjectColumns" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProjectConfig" EntityType="Self.ProjectConfig" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Projects" EntityType="Self.Projects" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="TableColumn" EntityType="Self.TableColumn" Schema="dbo" store:Type="Tables" />
-    <AssociationSet Name="FK_TableColumn_Projects" Association="Self.FK_TableColumn_Projects">
-      <End Role="Projects" EntitySet="Projects" />
-      <End Role="TableColumn" EntitySet="TableColumn" />
-    </AssociationSet>
+    <EntitySet Name="ProjectTables" EntityType="Self.ProjectTables" Schema="dbo" store:Type="Tables" />
   </EntityContainer>
 </Schema>

@@ -1,22 +1,46 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="GetixAdminModelStoreContainer" CdmEntityContainer="GetixAdminEntities">
-    <EntitySetMapping Name="Projects">
-      <EntityTypeMapping TypeName="GetixAdminModel.Project">
-        <MappingFragment StoreEntitySet="Projects">
+    <EntitySetMapping Name="ProjectConfigs">
+      <EntityTypeMapping TypeName="GetixAdminModel.ProjectConfig">
+        <MappingFragment StoreEntitySet="ProjectConfig">
+          <ScalarProperty Name="users" ColumnName="users" />
+          <ScalarProperty Name="projects" ColumnName="projects" />
           <ScalarProperty Name="id" ColumnName="id" />
-          <ScalarProperty Name="name" ColumnName="name" />
-          <ScalarProperty Name="description" ColumnName="description" />
-          <ScalarProperty Name="active" ColumnName="active" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="TableColumns">
-      <EntityTypeMapping TypeName="GetixAdminModel.TableColumn">
-        <MappingFragment StoreEntitySet="TableColumn">
-          <ScalarProperty Name="projectId" ColumnName="projectId" />
-          <ScalarProperty Name="columnNames" ColumnName="columnNames" />
-          <ScalarProperty Name="tableType" ColumnName="tableType" />
+    <EntitySetMapping Name="ProjectColumns">
+      <EntityTypeMapping TypeName="GetixAdminModel.ProjectColumn">
+        <MappingFragment StoreEntitySet="ProjectColumns">
+          <ScalarProperty Name="RowInsertDate" ColumnName="RowInsertDate" />
+          <ScalarProperty Name="Datatype" ColumnName="Datatype" />
+          <ScalarProperty Name="CoulmnName" ColumnName="CoulmnName" />
+          <ScalarProperty Name="ProjectTableID" ColumnName="ProjectTableID" />
+          <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+          <ScalarProperty Name="ProjectColumnId" ColumnName="ProjectColumnId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProjectTables">
+      <EntityTypeMapping TypeName="GetixAdminModel.ProjectTable">
+        <MappingFragment StoreEntitySet="ProjectTables">
+          <ScalarProperty Name="TableType" ColumnName="TableType" />
+          <ScalarProperty Name="RowInsertBy" ColumnName="RowInsertBy" />
+          <ScalarProperty Name="RowInsertDate" ColumnName="RowInsertDate" />
+          <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+          <ScalarProperty Name="ProjectTableName" ColumnName="ProjectTableName" />
+          <ScalarProperty Name="ProjectTableID" ColumnName="ProjectTableID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Projects">
+      <EntityTypeMapping TypeName="GetixAdminModel.Project">
+        <MappingFragment StoreEntitySet="Projects">
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="active" ColumnName="active" />
+          <ScalarProperty Name="description" ColumnName="description" />
           <ScalarProperty Name="name" ColumnName="name" />
           <ScalarProperty Name="id" ColumnName="id" />
         </MappingFragment>
