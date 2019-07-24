@@ -20,5 +20,6 @@ namespace Getix_Admin_Api.Models
         public string CoulmnName { get; set; }
         public string Datatype { get; set; }
         public System.DateTime RowInsertDate { get; set; }
+        public string IsDisplay { get; set; }
     }
 }

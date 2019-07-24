@@ -19,14 +19,51 @@ namespace Getix_Admin_Api.Controllers
         [HttpGet]
         public IQueryable<ProjectTable> GetTables()
         {
-            return db.ProjectTables;           
+            return db.ProjectTables.AsQueryable();
         }
 
         [HttpGet]
         public IHttpActionResult GetTable(int id)
         {
-           var tables = db.ProjectTables.Where(t => t.ProjectID == id).ToList();
-            return Ok(tables);
+            var employees = (from t in db.ProjectTables
+                             join p in db.Projects on t.ProjectID equals p.id
+                             where t.ProjectID == id || t.ProjectTableID == id
+                            select new
+                            {
+                                t.ProjectTableName,
+                                t.TableType,
+                                t.ProjectTableID,                                
+                                p.name,
+                                p.description                                
+                            }).ToList();
+
+            //var tables = db.ProjectTables.Where(t => t.ProjectID == id || t.ProjectTableID == id).ToList(); // do inner join with projects
+            return Ok(employees);
+        }
+
+        [HttpGet]        
+        public IHttpActionResult GetTableColumns(int tblId)
+        {
+            var tableColumns = (from t in db.ProjectTables
+                             join p in db.ProjectColumns on t.ProjectTableID equals p.ProjectTableID
+                             where t.ProjectTableID == tblId
+                             select new
+                             {
+                                 t.ProjectTableName,
+                                 t.TableType,
+                                 t.ProjectTableID,
+                                 p.CoulmnName,
+                                 p.Datatype,
+                                 p.IsDisplay
+                             }).ToList();
+
+
+            //var projectNames = db.ProjectColumns.Where(p => p.ProjectTableID == tblId).ToList();
+            //if (projectNames == null)
+            //{
+            //    return NotFound();
+            //}
+            return Ok(tableColumns);
         }
 
         [HttpPost]
@@ -36,9 +73,13 @@ namespace Getix_Admin_Api.Controllers
             {
                 var existingTable = checkTableName(tables.name);
                 var checkTableType = checkMainTable(tables.tableType);
-                if (!existingTable || !checkTableType)
+                if (!existingTable)
                 {
-                    string message = "Table already created";
+                    string message = "Table already existed";
+                    return BadRequest(message);
+                } else if (!checkTableType)
+                {
+                    string message = "One main table for project";
                     return BadRequest(message);
                 }
                 else
@@ -46,8 +87,8 @@ namespace Getix_Admin_Api.Controllers
                     string connectionString = @"Data Source=NIBLP535;Initial Catalog=GetixAdminDb;Integrated Security=True";
                     using (SqlConnection con = new SqlConnection(connectionString))
                     {
-                        con.Open();                       
-                        var commandStr = "CREATE TABLE " + tables.name + "(" + " Id" + " int identity(1,1) not null, ";
+                        con.Open();
+                        var commandStr = "CREATE TABLE " + tables.name + "(" + " PRJ_TASK_ID" + " int identity(1,1) not null, ";
                         bool isFirstCol = true;
                         foreach (var item in tables.columns)
                         {
@@ -55,7 +96,7 @@ namespace Getix_Admin_Api.Controllers
                             commandStr += "[" + item.columnName + "]" + item.dataType;
                             isFirstCol = false;
                         }
-                        commandStr += ", constraint " + "[PK_" + tables.name + "]" + " primary key clustered(id) " + ")";
+                        commandStr += ", constraint " + "[PK_" + tables.name + "]" + " primary key clustered(PRJ_TASK_ID) " + ")";
                         using (SqlCommand command = new SqlCommand(commandStr, con))
                             command.ExecuteNonQuery();
 
@@ -77,6 +118,7 @@ namespace Getix_Admin_Api.Controllers
                         ProjectColumn projectColumn = new ProjectColumn();
                         projectColumn.CoulmnName = column.columnName;
                         projectColumn.Datatype = column.dataType;
+                        projectColumn.IsDisplay = column.isDisplay;
                         projectColumn.ProjectId = tables.projectId;
                         projectColumn.ProjectTableID = projectTable.ProjectTableID;
                         projectColumn.RowInsertDate = Convert.ToDateTime(DateTime.Now.ToString("hh:mm:ss tt", System.Globalization.DateTimeFormatInfo.InvariantInfo));
@@ -91,6 +133,10 @@ namespace Getix_Admin_Api.Controllers
 
             return Ok();
         }
+
+       
+
+
         private bool checkTableName(string name)
         {
             var lstResult = (from table in db.ProjectTables.AsEnumerable()
@@ -111,13 +157,13 @@ namespace Getix_Admin_Api.Controllers
             var lstResult = (from table in db.ProjectTables.AsEnumerable()
                              where table.TableType == name
                              select table.TableType).ToList();
-            if (lstResult.Count == 0)
+            if (lstResult.Contains("Main Table"))
             {
-                return true;
+                return false;
             }
             else
             {
-                return false;
+                return true;
             }
         }
     }

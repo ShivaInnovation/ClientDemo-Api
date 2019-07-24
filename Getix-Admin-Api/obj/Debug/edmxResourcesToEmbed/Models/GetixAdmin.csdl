@@ -24,6 +24,7 @@
     <Property Name="CoulmnName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="Datatype" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
     <Property Name="RowInsertDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="IsDisplay" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="ProjectTable">
     <Key>

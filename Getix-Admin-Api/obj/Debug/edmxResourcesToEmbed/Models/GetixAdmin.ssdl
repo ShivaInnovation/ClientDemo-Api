@@ -9,6 +9,7 @@
     <Property Name="ProjectTableID" Type="int" Nullable="false" />
     <Property Name="CoulmnName" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="Datatype" Type="varchar" MaxLength="100" />
+    <Property Name="IsDisplay" Type="varchar" MaxLength="10" />
     <Property Name="RowInsertDate" Type="datetime" Nullable="false" />
   </EntityType>
   <EntityType Name="ProjectConfig">

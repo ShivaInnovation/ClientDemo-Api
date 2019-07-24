@@ -30,12 +30,12 @@ namespace Getix_Admin_Api.Controllers
         [HttpGet]
         public IHttpActionResult GetProject(int id)
        {
-            var projectColumns = db.ProjectColumns.Where(p => p.ProjectTableID == id).ToList();
-            if (projectColumns == null)
+            var projectNames = db.Projects.Where(p => p.id == id).FirstOrDefault();
+            if (projectNames == null)
             {
                 return NotFound();
             }
-            return Ok(projectColumns);
+            return Ok(projectNames);
         }
 
         // PUT: api/Projects/5

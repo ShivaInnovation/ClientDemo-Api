@@ -13,6 +13,7 @@
     <EntitySetMapping Name="ProjectColumns">
       <EntityTypeMapping TypeName="GetixAdminModel.ProjectColumn">
         <MappingFragment StoreEntitySet="ProjectColumns">
+          <ScalarProperty Name="IsDisplay" ColumnName="IsDisplay" />
           <ScalarProperty Name="RowInsertDate" ColumnName="RowInsertDate" />
           <ScalarProperty Name="Datatype" ColumnName="Datatype" />
           <ScalarProperty Name="CoulmnName" ColumnName="CoulmnName" />
