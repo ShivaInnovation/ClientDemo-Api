@@ -19,16 +19,16 @@ namespace Getix_Admin_Api.Controllers
         private GetixAdminEntities db = new GetixAdminEntities();
 
         // GET: api/ProjectConfigs
-        public IQueryable<ProjectConfig> GetProjectConfigs()
+        public IQueryable<Project_Config> GetProjectConfigs()
         {
-            return db.ProjectConfigs;
+            return db.Project_Config;
         }
 
         // GET: api/ProjectConfigs/5
-        [ResponseType(typeof(ProjectConfig))]
+       
         public IHttpActionResult GetProjectConfig(int id)
         {
-            ProjectConfig projectConfig = db.ProjectConfigs.Find(id);
+            Project_Config projectConfig = db.Project_Config.Find(id);
             if (projectConfig == null)
             {
                 return NotFound();
@@ -39,14 +39,14 @@ namespace Getix_Admin_Api.Controllers
 
         // PUT: api/ProjectConfigs/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutProjectConfig(int id, ProjectConfig projectConfig)
+        public IHttpActionResult PutProjectConfig(int id, Project_Config projectConfig)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != projectConfig.id)
+            if (id != projectConfig.Project_Config_Id)
             {
                 return BadRequest();
             }
@@ -81,27 +81,27 @@ namespace Getix_Admin_Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            ProjectConfig projectConfig = new ProjectConfig();
-            projectConfig.projects = string.Join(",", configModel.Projects);
-            projectConfig.users = string.Join(",", configModel.Users);
+            Project_Config projectConfig = new Project_Config();
+            //projectConfig.projects = string.Join(",", configModel.Projects);
+            //projectConfig.users = string.Join(",", configModel.Users);
 
-            db.ProjectConfigs.Add(projectConfig);
-            db.SaveChanges();
+            //db.ProjectConfigs.Add(projectConfig);
+            //db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = projectConfig.id }, projectConfig);
+            return CreatedAtRoute("DefaultApi", new { id = projectConfig.Project_ID }, projectConfig);
         }
 
         // DELETE: api/ProjectConfigs/5
-        [ResponseType(typeof(ProjectConfig))]
+      
         public IHttpActionResult DeleteProjectConfig(int id)
         {
-            ProjectConfig projectConfig = db.ProjectConfigs.Find(id);
+            Project_Config projectConfig = db.Project_Config.Find(id);
             if (projectConfig == null)
             {
                 return NotFound();
             }
 
-            db.ProjectConfigs.Remove(projectConfig);
+            db.Project_Config.Remove(projectConfig);
             db.SaveChanges();
 
             return Ok(projectConfig);
@@ -118,7 +118,7 @@ namespace Getix_Admin_Api.Controllers
 
         private bool ProjectConfigExists(int id)
         {
-            return db.ProjectConfigs.Count(e => e.id == id) > 0;
+            return db.Project_Config.Count(e => e.Project_Config_Id == id) > 0;
         }
     }
 }

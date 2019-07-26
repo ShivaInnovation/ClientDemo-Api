@@ -1,5 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="GetixAdminModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Config">
+    <Key>
+      <PropertyRef Name="Config_Id" />
+    </Key>
+    <Property Name="Config_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Config_Name" Type="varchar" MaxLength="150" Nullable="false" />
+    <Property Name="Project_Id" Type="int" Nullable="false" />
+    <Property Name="RowInsertDate" Type="datetime" Nullable="false" />
+    <Property Name="RowInsertBy" Type="varchar" MaxLength="150" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Project_Config">
+    <Key>
+      <PropertyRef Name="Project_Config_Id" />
+    </Key>
+    <Property Name="Project_Config_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Project_ID" Type="int" Nullable="false" />
+    <Property Name="User_Id" Type="int" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedBy" Type="varchar" MaxLength="50" />
+  </EntityType>
   <EntityType Name="ProjectColumns">
     <Key>
       <PropertyRef Name="ProjectColumnId" />
@@ -9,16 +29,8 @@
     <Property Name="ProjectTableID" Type="int" Nullable="false" />
     <Property Name="CoulmnName" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="Datatype" Type="varchar" MaxLength="100" />
-    <Property Name="IsDisplay" Type="varchar" MaxLength="10" />
+    <Property Name="IsDisplay" Type="varchar" MaxLength="50" />
     <Property Name="RowInsertDate" Type="datetime" Nullable="false" />
-  </EntityType>
-  <EntityType Name="ProjectConfig">
-    <Key>
-      <PropertyRef Name="id" />
-    </Key>
-    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="projects" Type="varchar(max)" Nullable="false" />
-    <Property Name="users" Type="varchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="Projects">
     <Key>
@@ -42,10 +54,25 @@
     <Property Name="RowInsertDate" Type="datetime" Nullable="false" />
     <Property Name="RowInsertBy" Type="varchar" MaxLength="150" Nullable="false" />
   </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="User_id" />
+    </Key>
+    <Property Name="User_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="LastName" Type="nvarchar" MaxLength="50" />
+    <Property Name="WindowsLogin" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="UsrEmail" Type="nvarchar" MaxLength="100" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+    <Property Name="Row_inserted_Date" Type="datetime" Nullable="false" />
+    <Property Name="Row_updated_Date" Type="datetime" />
+  </EntityType>
   <EntityContainer Name="GetixAdminModelStoreContainer">
+    <EntitySet Name="Config" EntityType="Self.Config" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Project_Config" EntityType="Self.Project_Config" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ProjectColumns" EntityType="Self.ProjectColumns" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="ProjectConfig" EntityType="Self.ProjectConfig" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Projects" EntityType="Self.Projects" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ProjectTables" EntityType="Self.ProjectTables" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
   </EntityContainer>
 </Schema>

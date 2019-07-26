@@ -38,6 +38,24 @@ namespace Getix_Admin_Api.Controllers
             return Ok(projectNames);
         }
 
+
+        //[HttpGet]
+        //public IHttpActionResult GetProjectConfigs(string userName)
+        //{
+        //    var projectNames = (from conf in db.ProjectConfigs
+        //                        join prj in db.Projects on conf.projects equals prj.id
+        //                        //where prj.ProjectTableID == 2
+        //                        select new {
+        //                        });
+
+
+        //    if (projectNames == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return Ok(projectNames);
+        //}
+
         // PUT: api/Projects/5
         [HttpPut]
         public IHttpActionResult PutProject(int id, Project project)

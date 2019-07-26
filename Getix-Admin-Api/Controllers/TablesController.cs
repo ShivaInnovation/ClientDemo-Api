@@ -27,42 +27,41 @@ namespace Getix_Admin_Api.Controllers
         {
             var employees = (from t in db.ProjectTables
                              join p in db.Projects on t.ProjectID equals p.id
-                             where t.ProjectID == id || t.ProjectTableID == id
-                            select new
-                            {
-                                t.ProjectTableName,
-                                t.TableType,
-                                t.ProjectTableID,                                
-                                p.name,
-                                p.description                                
-                            }).ToList();
-
-            //var tables = db.ProjectTables.Where(t => t.ProjectID == id || t.ProjectTableID == id).ToList(); // do inner join with projects
-            return Ok(employees);
-        }
-
-        [HttpGet]        
-        public IHttpActionResult GetTableColumns(int tblId)
-        {
-            var tableColumns = (from t in db.ProjectTables
-                             join p in db.ProjectColumns on t.ProjectTableID equals p.ProjectTableID
-                             where t.ProjectTableID == tblId
+                             where t.ProjectID == id
                              select new
                              {
                                  t.ProjectTableName,
                                  t.TableType,
                                  t.ProjectTableID,
-                                 p.CoulmnName,
-                                 p.Datatype,
-                                 p.IsDisplay
+                                 t.ProjectID,
+                                 p.name,
+                                 p.description
                              }).ToList();
 
 
-            //var projectNames = db.ProjectColumns.Where(p => p.ProjectTableID == tblId).ToList();
-            //if (projectNames == null)
-            //{
-            //    return NotFound();
-            //}
+
+
+            //var tables = db.ProjectTables.Where(t => t.ProjectID == id || t.ProjectTableID == id).ToList(); // do inner join with projects
+            return Ok(employees);
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetTableColumns(int tblId)
+        {
+            var tableColumns = (from t in db.ProjectTables
+                                join p in db.ProjectColumns on t.ProjectTableID equals p.ProjectTableID
+                                where t.ProjectTableID == tblId
+                                select new
+                                {
+                                    t.ProjectTableName,
+                                    t.TableType,
+                                    t.ProjectTableID,
+                                    p.CoulmnName,
+                                    p.Datatype,
+                                    p.IsDisplay,
+                                    t.ProjectID
+                                }).ToList();
+
             return Ok(tableColumns);
         }
 
@@ -72,12 +71,13 @@ namespace Getix_Admin_Api.Controllers
             try
             {
                 var existingTable = checkTableName(tables.name);
-                var checkTableType = checkMainTable(tables.tableType);
+                var checkTableType = checkMainTable(tables.tableType, tables.tableType);
                 if (!existingTable)
                 {
                     string message = "Table already existed";
                     return BadRequest(message);
-                } else if (!checkTableType)
+                }
+                else if (!checkTableType)
                 {
                     string message = "One main table for project";
                     return BadRequest(message);
@@ -134,7 +134,7 @@ namespace Getix_Admin_Api.Controllers
             return Ok();
         }
 
-       
+
 
 
         private bool checkTableName(string name)
@@ -152,10 +152,10 @@ namespace Getix_Admin_Api.Controllers
             }
         }
 
-        private bool checkMainTable(string name)
+        private bool checkMainTable(string name, string tableType)
         {
             var lstResult = (from table in db.ProjectTables.AsEnumerable()
-                             where table.TableType == name
+                             where table.TableType == name && table.TableType.ToUpper() == tableType.ToUpper()
                              select table.TableType).ToList();
             if (lstResult.Contains("Main Table"))
             {

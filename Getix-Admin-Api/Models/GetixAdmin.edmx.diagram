@@ -5,10 +5,12 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="cfc93fea32d9435b9ab82a4033000c38" Name="Diagram1">
-        <EntityTypeShape EntityType="GetixAdminModel.ProjectConfig" Width="1.5" PointX="3.375" PointY="0.75" />
         <EntityTypeShape EntityType="GetixAdminModel.ProjectColumn" Width="1.5" PointX="3.375" PointY="3.75" />
         <EntityTypeShape EntityType="GetixAdminModel.ProjectTable" Width="1.5" PointX="5.375" PointY="0.75" />
         <EntityTypeShape EntityType="GetixAdminModel.Project" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="GetixAdminModel.User" Width="1.5" PointX="0.75" PointY="3.75" />
+        <EntityTypeShape EntityType="GetixAdminModel.Project_Config" Width="1.5" PointX="5.375" PointY="3.75" />
+        <EntityTypeShape EntityType="GetixAdminModel.Config" Width="1.5" PointX="5.375" PointY="6.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -1,15 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="GetixAdminModelStoreContainer" CdmEntityContainer="GetixAdminEntities">
-    <EntitySetMapping Name="ProjectConfigs">
-      <EntityTypeMapping TypeName="GetixAdminModel.ProjectConfig">
-        <MappingFragment StoreEntitySet="ProjectConfig">
-          <ScalarProperty Name="users" ColumnName="users" />
-          <ScalarProperty Name="projects" ColumnName="projects" />
-          <ScalarProperty Name="id" ColumnName="id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="ProjectColumns">
       <EntityTypeMapping TypeName="GetixAdminModel.ProjectColumn">
         <MappingFragment StoreEntitySet="ProjectColumns">
@@ -44,6 +35,42 @@
           <ScalarProperty Name="description" ColumnName="description" />
           <ScalarProperty Name="name" ColumnName="name" />
           <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="GetixAdminModel.User">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="Row_updated_Date" ColumnName="Row_updated_Date" />
+          <ScalarProperty Name="Row_inserted_Date" ColumnName="Row_inserted_Date" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="UsrEmail" ColumnName="UsrEmail" />
+          <ScalarProperty Name="WindowsLogin" ColumnName="WindowsLogin" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="User_id" ColumnName="User_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Project_Config">
+      <EntityTypeMapping TypeName="GetixAdminModel.Project_Config">
+        <MappingFragment StoreEntitySet="Project_Config">
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+          <ScalarProperty Name="Project_ID" ColumnName="Project_ID" />
+          <ScalarProperty Name="Project_Config_Id" ColumnName="Project_Config_Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Configs">
+      <EntityTypeMapping TypeName="GetixAdminModel.Config">
+        <MappingFragment StoreEntitySet="Config">
+          <ScalarProperty Name="RowInsertBy" ColumnName="RowInsertBy" />
+          <ScalarProperty Name="RowInsertDate" ColumnName="RowInsertDate" />
+          <ScalarProperty Name="Project_Id" ColumnName="Project_Id" />
+          <ScalarProperty Name="Config_Name" ColumnName="Config_Name" />
+          <ScalarProperty Name="Config_Id" ColumnName="Config_Id" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

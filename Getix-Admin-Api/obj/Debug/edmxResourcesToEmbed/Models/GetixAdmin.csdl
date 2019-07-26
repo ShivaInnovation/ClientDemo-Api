@@ -1,19 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="GetixAdminModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
   <EntityContainer Name="GetixAdminEntities" annotation:LazyLoadingEnabled="true">
-    <EntitySet Name="ProjectConfigs" EntityType="GetixAdminModel.ProjectConfig" />
     <EntitySet Name="ProjectColumns" EntityType="GetixAdminModel.ProjectColumn" />
     <EntitySet Name="ProjectTables" EntityType="GetixAdminModel.ProjectTable" />
     <EntitySet Name="Projects" EntityType="GetixAdminModel.Project" />
+    <EntitySet Name="Users" EntityType="GetixAdminModel.User" />
+    <EntitySet Name="Project_Config" EntityType="GetixAdminModel.Project_Config" />
+    <EntitySet Name="Configs" EntityType="GetixAdminModel.Config" />
   </EntityContainer>
-  <EntityType Name="ProjectConfig">
-    <Key>
-      <PropertyRef Name="id" />
-    </Key>
-    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="projects" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-    <Property Name="users" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-  </EntityType>
   <EntityType Name="ProjectColumn">
     <Key>
       <PropertyRef Name="ProjectColumnId" />
@@ -24,7 +18,7 @@
     <Property Name="CoulmnName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="Datatype" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
     <Property Name="RowInsertDate" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="IsDisplay" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="IsDisplay" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="ProjectTable">
     <Key>
@@ -47,5 +41,38 @@
     <Property Name="active" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="ModifiedBy" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
     <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="User_id" />
+    </Key>
+    <Property Name="User_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="WindowsLogin" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="UsrEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="IsActive" Type="Boolean" Nullable="false" />
+    <Property Name="Row_inserted_Date" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Row_updated_Date" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="Project_Config">
+    <Key>
+      <PropertyRef Name="Project_Config_Id" />
+    </Key>
+    <Property Name="Project_Config_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Project_ID" Type="Int32" Nullable="false" />
+    <Property Name="User_Id" Type="Int32" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="Config">
+    <Key>
+      <PropertyRef Name="Config_Id" />
+    </Key>
+    <Property Name="Config_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Config_Name" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="Project_Id" Type="Int32" Nullable="false" />
+    <Property Name="RowInsertDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="RowInsertBy" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
   </EntityType>
 </Schema>

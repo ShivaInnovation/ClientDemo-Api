@@ -25,9 +25,11 @@ namespace Getix_Admin_Api.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<ProjectConfig> ProjectConfigs { get; set; }
         public virtual DbSet<ProjectColumn> ProjectColumns { get; set; }
         public virtual DbSet<ProjectTable> ProjectTables { get; set; }
         public virtual DbSet<Project> Projects { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Project_Config> Project_Config { get; set; }
+        public virtual DbSet<Config> Configs { get; set; }
     }
 }

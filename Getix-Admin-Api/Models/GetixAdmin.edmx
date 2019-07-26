@@ -5,6 +5,26 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="GetixAdminModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Config">
+          <Key>
+            <PropertyRef Name="Config_Id" />
+          </Key>
+          <Property Name="Config_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Config_Name" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="Project_Id" Type="int" Nullable="false" />
+          <Property Name="RowInsertDate" Type="datetime" Nullable="false" />
+          <Property Name="RowInsertBy" Type="varchar" MaxLength="150" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Project_Config">
+          <Key>
+            <PropertyRef Name="Project_Config_Id" />
+          </Key>
+          <Property Name="Project_Config_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Project_ID" Type="int" Nullable="false" />
+          <Property Name="User_Id" Type="int" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="CreatedBy" Type="varchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="ProjectColumns">
           <Key>
             <PropertyRef Name="ProjectColumnId" />
@@ -14,16 +34,8 @@
           <Property Name="ProjectTableID" Type="int" Nullable="false" />
           <Property Name="CoulmnName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Datatype" Type="varchar" MaxLength="100" />
-          <Property Name="IsDisplay" Type="varchar" MaxLength="10" />
+          <Property Name="IsDisplay" Type="varchar" MaxLength="50" />
           <Property Name="RowInsertDate" Type="datetime" Nullable="false" />
-        </EntityType>
-        <EntityType Name="ProjectConfig">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="projects" Type="varchar(max)" Nullable="false" />
-          <Property Name="users" Type="varchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="Projects">
           <Key>
@@ -47,30 +59,39 @@
           <Property Name="RowInsertDate" Type="datetime" Nullable="false" />
           <Property Name="RowInsertBy" Type="varchar" MaxLength="150" Nullable="false" />
         </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="User_id" />
+          </Key>
+          <Property Name="User_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" />
+          <Property Name="WindowsLogin" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="UsrEmail" Type="nvarchar" MaxLength="100" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="Row_inserted_Date" Type="datetime" Nullable="false" />
+          <Property Name="Row_updated_Date" Type="datetime" />
+        </EntityType>
         <EntityContainer Name="GetixAdminModelStoreContainer">
+          <EntitySet Name="Config" EntityType="Self.Config" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Project_Config" EntityType="Self.Project_Config" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProjectColumns" EntityType="Self.ProjectColumns" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ProjectConfig" EntityType="Self.ProjectConfig" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Projects" EntityType="Self.Projects" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProjectTables" EntityType="Self.ProjectTables" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="GetixAdminModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="GetixAdminEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="ProjectConfigs" EntityType="GetixAdminModel.ProjectConfig" />
           <EntitySet Name="ProjectColumns" EntityType="GetixAdminModel.ProjectColumn" />
           <EntitySet Name="ProjectTables" EntityType="GetixAdminModel.ProjectTable" />
           <EntitySet Name="Projects" EntityType="GetixAdminModel.Project" />
+          <EntitySet Name="Users" EntityType="GetixAdminModel.User" />
+          <EntitySet Name="Project_Config" EntityType="GetixAdminModel.Project_Config" />
+          <EntitySet Name="Configs" EntityType="GetixAdminModel.Config" />
         </EntityContainer>
-        <EntityType Name="ProjectConfig">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="projects" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="users" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="ProjectColumn">
           <Key>
             <PropertyRef Name="ProjectColumnId" />
@@ -81,7 +102,7 @@
           <Property Name="CoulmnName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Datatype" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="RowInsertDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="IsDisplay" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="IsDisplay" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ProjectTable">
           <Key>
@@ -105,21 +126,45 @@
           <Property Name="ModifiedBy" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
         </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="User_id" />
+          </Key>
+          <Property Name="User_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WindowsLogin" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UsrEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="Row_inserted_Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Row_updated_Date" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Project_Config">
+          <Key>
+            <PropertyRef Name="Project_Config_Id" />
+          </Key>
+          <Property Name="Project_Config_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Project_ID" Type="Int32" Nullable="false" />
+          <Property Name="User_Id" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Config">
+          <Key>
+            <PropertyRef Name="Config_Id" />
+          </Key>
+          <Property Name="Config_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Config_Name" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Project_Id" Type="Int32" Nullable="false" />
+          <Property Name="RowInsertDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RowInsertBy" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="GetixAdminModelStoreContainer" CdmEntityContainer="GetixAdminEntities">
-          <EntitySetMapping Name="ProjectConfigs">
-            <EntityTypeMapping TypeName="GetixAdminModel.ProjectConfig">
-              <MappingFragment StoreEntitySet="ProjectConfig">
-                <ScalarProperty Name="users" ColumnName="users" />
-                <ScalarProperty Name="projects" ColumnName="projects" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ProjectColumns">
             <EntityTypeMapping TypeName="GetixAdminModel.ProjectColumn">
               <MappingFragment StoreEntitySet="ProjectColumns">
@@ -154,6 +199,42 @@
                 <ScalarProperty Name="description" ColumnName="description" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="GetixAdminModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Row_updated_Date" ColumnName="Row_updated_Date" />
+                <ScalarProperty Name="Row_inserted_Date" ColumnName="Row_inserted_Date" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="UsrEmail" ColumnName="UsrEmail" />
+                <ScalarProperty Name="WindowsLogin" ColumnName="WindowsLogin" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="User_id" ColumnName="User_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Project_Config">
+            <EntityTypeMapping TypeName="GetixAdminModel.Project_Config">
+              <MappingFragment StoreEntitySet="Project_Config">
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+                <ScalarProperty Name="Project_ID" ColumnName="Project_ID" />
+                <ScalarProperty Name="Project_Config_Id" ColumnName="Project_Config_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Configs">
+            <EntityTypeMapping TypeName="GetixAdminModel.Config">
+              <MappingFragment StoreEntitySet="Config">
+                <ScalarProperty Name="RowInsertBy" ColumnName="RowInsertBy" />
+                <ScalarProperty Name="RowInsertDate" ColumnName="RowInsertDate" />
+                <ScalarProperty Name="Project_Id" ColumnName="Project_Id" />
+                <ScalarProperty Name="Config_Name" ColumnName="Config_Name" />
+                <ScalarProperty Name="Config_Id" ColumnName="Config_Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

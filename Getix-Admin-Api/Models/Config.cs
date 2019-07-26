@@ -12,10 +12,12 @@ namespace Getix_Admin_Api.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ProjectConfig
+    public partial class Config
     {
-        public int id { get; set; }
-        public string projects { get; set; }
-        public string users { get; set; }
+        public int Config_Id { get; set; }
+        public string Config_Name { get; set; }
+        public int Project_Id { get; set; }
+        public System.DateTime RowInsertDate { get; set; }
+        public string RowInsertBy { get; set; }
     }
 }
